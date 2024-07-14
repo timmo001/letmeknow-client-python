@@ -1,0 +1,126 @@
+---
+name: Python Client - Lint
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+  workflow_dispatch:
+
+env:
+  DEFAULT_PYTHON: "3.11"
+
+jobs:
+  codespell:
+    name: 👕 Codespell
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4.1.7
+      - name: 🏗 Set up Poetry
+        run: pipx install poetry
+        working-directory: client/python
+      - name: 🏗 Set up Python ${{ env.DEFAULT_PYTHON }}
+        id: python
+        uses: actions/setup-python@v5.1.1
+        with:
+          python-version: ${{ env.DEFAULT_PYTHON }}
+          cache: "poetry"
+      - name: 🏗 Install workflow dependencies
+        run: |
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+        working-directory: client/python
+      - name: 🏗 Install Python dependencies
+        run: poetry install --no-interaction
+        working-directory: client/python
+      - name: 🚀 Check code for common misspellings
+        run: poetry run codespell src/**/*.py
+        working-directory: client/python
+  ruff:
+    name: 👕 Ruff
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4.1.7
+      - name: 🏗 Set up Poetry
+        run: pipx install poetry
+        working-directory: client/python
+      - name: 🏗 Set up Python ${{ env.DEFAULT_PYTHON }}
+        id: python
+        uses: actions/setup-python@v5.1.1
+        with:
+          python-version: ${{ env.DEFAULT_PYTHON }}
+          cache: "poetry"
+      - name: 🏗 Install workflow dependencies
+        run: |
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+        working-directory: client/python
+      - name: 🏗 Install Python dependencies
+        run: poetry install --no-interaction
+        working-directory: client/python
+      - name: 🚀 Run ruff linter
+        run: poetry run ruff check --output-format=github .
+        working-directory: client/python
+      - name: 🚀 Run ruff formatter
+        run: poetry run ruff format --check .
+        working-directory: client/python
+  pylint:
+    name: 👕 PyLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4.1.7
+      - name: 🏗 Set up Poetry
+        run: pipx install poetry
+        working-directory: client/python
+      - name: 🏗 Set up Python ${{ env.DEFAULT_PYTHON }}
+        id: python
+        uses: actions/setup-python@v5.1.1
+        with:
+          python-version: ${{ env.DEFAULT_PYTHON }}
+          cache: "poetry"
+      - name: 🏗 Install workflow dependencies
+        run: |
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+        working-directory: client/python
+      - name: 🏗 Install Python dependencies
+        run: poetry install --no-interaction
+        working-directory: client/python
+      - name: 🚀 Run pylint
+        run: poetry run pylint **/*.py
+        working-directory: client/python
+  mypy:
+    name: 👕 MyPy
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Check out code from GitHub
+        uses: actions/checkout@v4.1.7
+      - name: 🏗 Set up Poetry
+        run: pipx install poetry
+        working-directory: client/python
+      - name: 🏗 Set up Python ${{ env.DEFAULT_PYTHON }}
+        id: python
+        uses: actions/setup-python@v5.1.1
+        with:
+          python-version: ${{ env.DEFAULT_PYTHON }}
+          cache: "poetry"
+      - name: 🏗 Install workflow dependencies
+        run: |
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+        working-directory: client/python
+      - name: 🏗 Install dependencies
+        run: poetry install --no-interaction
+        working-directory: client/python
+      - name: 🚀 Run mypy
+        run: poetry run mypy src tests
+        working-directory: client/python
