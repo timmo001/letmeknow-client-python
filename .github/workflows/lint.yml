@@ -1,5 +1,5 @@
 ---
-name: Python Client - Lint
+name: Lint
 
 # yamllint disable-line rule:truthy
 on:

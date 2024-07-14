@@ -1,5 +1,5 @@
 ---
-name: Python Client - Release
+name: Release
 
 # yamllint disable-line rule:truthy
 on:
