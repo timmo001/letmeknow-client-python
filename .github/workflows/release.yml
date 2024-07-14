@@ -25,7 +25,6 @@ jobs:
           token: ${{ secrets.PUSH_TOKEN }}
       - name: 🏗 Set up Poetry
         run: pipx install poetry
-        working-directory: client/python
       - name: 🏗 Set up Python ${{ env.DEFAULT_PYTHON }}
         id: python
         uses: actions/setup-python@v5.1.1
@@ -36,18 +35,14 @@ jobs:
         run: |
           poetry config virtualenvs.create true
           poetry config virtualenvs.in-project true
-        working-directory: client/python
       - name: 🏗 Install dependencies
         run: poetry install --no-interaction
-        working-directory: client/python
       - name: 🏗 Set package version
         id: set-version-new
         run: |
           poetry version --no-interaction "${{ github.event.release.tag_name }}"
-        working-directory: client/python
       - name: 🏗 Build package
         run: poetry build --no-interaction
-        working-directory: client/python
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
@@ -62,4 +57,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
         with:
           commit_message: |
-            Bump python client version to ${{ github.event.release.tag_name }}
+            Bump version to ${{ github.event.release.tag_name }}
