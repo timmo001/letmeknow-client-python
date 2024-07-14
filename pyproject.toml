@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "letmeknowclient"
-version = "0.4.1"
+version = "1.0.0"
 description = "Python client for LetMeKnow."
 authors = ["Aidan Timson <aidan@timmo.dev>"]
 maintainers = ["Aidan Timson <aidan@timmo.dev>"]
